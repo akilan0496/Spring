@@ -1,12 +1,10 @@
 package com.akilan0496.controller;
 
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.data.repository.query.Param;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.DeleteMapping;
@@ -14,10 +12,12 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.akilan0496.model.User;
+import com.akilan0496.model.wrapper.UserWrapper;
 import com.akilan0496.util.CustomJSONRoot;
 import com.akilan0496.util.JSONRootHelper;
 
@@ -56,12 +56,17 @@ public class UserController {
 		user.setName("Brock");
 		user.setLastName("Lesner");
 		user.setEmail("brock_lesner@gmail.com");
-		return new ResponseEntity<Map<String, Object>>(jsonRootHelper.getResponse(User.class.getAnnotation(CustomJSONRoot.class).singular(), user), HttpStatus.OK);
+		
+		Map<String, Object> userResponse = jsonRootHelper.getResponse(User.class.getAnnotation(CustomJSONRoot.class).singular(), user);
+		return new ResponseEntity<Map<String, Object>>(userResponse, HttpStatus.OK);
 	}
 	
 	@PostMapping
-	public ResponseEntity<Map<String, Object>> createUser() {
-		return null;
+	public ResponseEntity<Map<String, Object>> createUser(@RequestBody UserWrapper user) {
+		user.getUser().setPassword("THISISPASSWORD");
+		
+		Map<String, Object> userResponse = jsonRootHelper.getResponse(User.class.getAnnotation(CustomJSONRoot.class).singular(), user.getUser());
+		return new ResponseEntity<Map<String,Object>>(userResponse, HttpStatus.OK);
 	}
 	
 	@PutMapping
