@@ -1,6 +1,6 @@
-package com.akilan0496.model.wrapper;
+package com.akilan0496.model.VO.wrapper;
 
-import com.akilan0496.model.User;
+import com.akilan0496.model.VO.User;
 
 public class UserWrapper {
 

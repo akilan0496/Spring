@@ -16,8 +16,9 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.akilan0496.model.User;
-import com.akilan0496.model.wrapper.UserWrapper;
+import com.akilan0496.BO.UserBO;
+import com.akilan0496.model.VO.User;
+import com.akilan0496.model.VO.wrapper.UserWrapper;
 import com.akilan0496.util.CustomJSONRoot;
 import com.akilan0496.util.JSONRootHelper;
 
@@ -28,31 +29,37 @@ public class UserController {
 	@Autowired
 	private JSONRootHelper jsonRootHelper;
 	
+	@Autowired
+	private UserBO userBO;
+	
 	@GetMapping
 	public ResponseEntity<Map<String, Object>> getUsers() {
-		List<User> userlist = new ArrayList<User>();
-		User user = new User();
-		user.setUserId("1");
-		user.setName("Akilan");
-		user.setLastName("Mohan");
-		user.setEmail("makilanit@gmail.com");
 		
-		User user1 = new User();
-		user1.setUserId("2");
-		user1.setName("Roman");
-		user1.setLastName("Reigns");
-		user1.setEmail("romanreigns@gmail.com");
+		List<User> userLists = userBO.findAll();
 		
-		userlist.add(user);
-		userlist.add(user1);
+//		List<User> userlist = new ArrayList<User>();
+//		User user = new User();
+//		user.setUserId(1L);
+//		user.setName("Akilan");
+//		user.setLastName("Mohan");
+//		user.setEmail("makilanit@gmail.com");
+//		
+//		User user1 = new User();
+//		user1.setUserId(2L);
+//		user1.setName("Roman");
+//		user1.setLastName("Reigns");
+//		user1.setEmail("romanreigns@gmail.com");
+//		
+//		userlist.add(user);
+//		userlist.add(user1);
 
-		return new ResponseEntity<Map<String, Object>>(jsonRootHelper.getResponse(User.class.getAnnotation(CustomJSONRoot.class).plural(), userlist), HttpStatus.OK);
+		return new ResponseEntity<Map<String, Object>>(jsonRootHelper.getResponse(User.class.getAnnotation(CustomJSONRoot.class).plural(), userLists), HttpStatus.OK);
 	}
 	
 	@GetMapping(value = "/{userId}")
 	public ResponseEntity<Map<String, Object>> getUser(@PathVariable(value = "userId") String userId) {
 		User user = new User();
-		user.setUserId("3");
+		user.setUserId(3L);
 		user.setName("Brock");
 		user.setLastName("Lesner");
 		user.setEmail("brock_lesner@gmail.com");
